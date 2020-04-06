@@ -6,13 +6,14 @@
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="studentNo" column="student_no" jdbcType="VARCHAR"/>
-        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="avatar" column="avatar" jdbcType="INTEGER"/>
     </resultMap>
 
     <!--查询单个-->
     <select id="queryById" resultMap="StudentMap">
         select
-          id, name, student_no, user_id
+          *
+
         from face.student
         where id = #{id}
     </select>
@@ -20,7 +21,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="StudentMap">
         select
-          id, name, student_no, user_id
+          id, name, student_no, avatar
         from face.student
         limit #{offset}, #{limit}
     </select>
@@ -28,7 +29,7 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="StudentMap">
         select
-          id, name, student_no, user_id
+          id, name, student_no, avatar
         from face.student
         <where>
             <if test="id != null">
@@ -40,16 +41,16 @@
             <if test="studentNo != null and studentNo != ''">
                 and student_no = #{studentNo}
             </if>
-            <if test="userId != null">
-                and user_id = #{userId}
+            <if test="avatar != null">
+                and avatar = #{avatar}
             </if>
         </where>
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into face.student(name, student_no, user_id)
-        values (#{name}, #{studentNo}, #{userId})
+        insert into face.student(name, student_no, avatar)
+        values (#{name}, #{studentNo}, #{avatar})
     </insert>
 
     <!--通过主键修改数据-->
@@ -62,8 +63,8 @@
             <if test="studentNo != null and studentNo != ''">
                 student_no = #{studentNo},
             </if>
-            <if test="userId != null">
-                user_id = #{userId},
+            <if test="avatar != null">
+                avatar = #{avatar},
             </if>
         </set>
         where id = #{id}

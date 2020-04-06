@@ -6,10 +6,10 @@ import java.io.Serializable;
  * (Student)实体类
  *
  * @author makejava
- * @since 2020-04-06 13:33:58
+ * @since 2020-04-06 16:09:15
  */
 public class Student implements Serializable {
-    private static final long serialVersionUID = -53980545806915058L;
+    private static final long serialVersionUID = 571628402081045124L;
     
     private Integer id;
     /**
@@ -20,10 +20,8 @@ public class Student implements Serializable {
     * 学号
     */
     private String studentNo;
-    /**
-    * 用户id
-    */
-    private Integer userId;
+    
+    private String avatar;
 
 
     public Integer getId() {
@@ -50,12 +48,12 @@ public class Student implements Serializable {
         this.studentNo = studentNo;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
 }

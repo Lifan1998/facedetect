@@ -5,8 +5,7 @@
     <resultMap type="com.example.face.entity.Studentcheckin" id="StudentcheckinMap">
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="studentId" column="student_id" jdbcType="INTEGER"/>
-        <result property="classId" column="class_id" jdbcType="INTEGER"/>
-        <result property="teacherId" column="teacher_id" jdbcType="INTEGER"/>
+        <result property="checkinId" column="checkin_id" jdbcType="INTEGER"/>
         <result property="status" column="status" jdbcType="INTEGER"/>
         <result property="addtime" column="addTime" jdbcType="TIMESTAMP"/>
         <result property="updatetime" column="updateTime" jdbcType="TIMESTAMP"/>
@@ -15,7 +14,8 @@
     <!--查询单个-->
     <select id="queryById" resultMap="StudentcheckinMap">
         select
-          id, student_id, class_id, teacher_id, status, addTime, updateTime
+          *
+
         from face.studentcheckin
         where id = #{id}
     </select>
@@ -23,7 +23,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="StudentcheckinMap">
         select
-          id, student_id, class_id, teacher_id, status, addTime, updateTime
+          id, student_id, checkin_id, status, addTime, updateTime
         from face.studentcheckin
         limit #{offset}, #{limit}
     </select>
@@ -31,7 +31,7 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="StudentcheckinMap">
         select
-          id, student_id, class_id, teacher_id, status, addTime, updateTime
+          id, student_id, checkin_id, status, addTime, updateTime
         from face.studentcheckin
         <where>
             <if test="id != null">
@@ -40,11 +40,8 @@
             <if test="studentId != null">
                 and student_id = #{studentId}
             </if>
-            <if test="classId != null">
-                and class_id = #{classId}
-            </if>
-            <if test="teacherId != null">
-                and teacher_id = #{teacherId}
+            <if test="checkinId != null">
+                and checkin_id = #{checkinId}
             </if>
             <if test="status != null">
                 and status = #{status}
@@ -58,10 +55,20 @@
         </where>
     </select>
 
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryByCheckInId" resultMap="StudentcheckinMap">
+        select
+        id, student_id, checkin_id, status, addTime, updateTime
+        from face.studentcheckin
+        <where>
+            checkin_id = #{checkinId}
+        </where>
+    </select>
+
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into face.studentcheckin(student_id, class_id, teacher_id, status, addTime, updateTime)
-        values (#{studentId}, #{classId}, #{teacherId}, #{status}, #{addtime}, #{updatetime})
+        insert into face.studentcheckin(student_id, checkin_id, status, addTime, updateTime)
+        values (#{studentId}, #{checkinId}, #{status}, #{addtime}, #{updatetime})
     </insert>
 
     <!--通过主键修改数据-->
@@ -71,11 +78,8 @@
             <if test="studentId != null">
                 student_id = #{studentId},
             </if>
-            <if test="classId != null">
-                class_id = #{classId},
-            </if>
-            <if test="teacherId != null">
-                teacher_id = #{teacherId},
+            <if test="checkinId != null">
+                checkin_id = #{checkinId},
             </if>
             <if test="status != null">
                 status = #{status},
@@ -90,20 +94,25 @@
         where id = #{id}
     </update>
 
-    <!--通过主键修改数据-->
     <update id="updateStatus">
         update face.studentcheckin
         <set>
+
             <if test="status != null">
                 status = #{status},
             </if>
         </set>
-        where id = #{id}
+        where student_id = #{studentId}
+        and checkin_id = #{checkInId}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
         delete from face.studentcheckin where id = #{id}
+    </delete>
+
+    <delete id="deleteStudentByCheckIn">
+        delete from face.studentcheckin where checkin_id = #{checkInId} and student_id = #{studentId}
     </delete>
 
 </mapper>

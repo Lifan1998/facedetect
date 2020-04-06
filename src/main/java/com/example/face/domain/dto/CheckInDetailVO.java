@@ -12,8 +12,8 @@ import java.util.List;
 @Data
 public class CheckInDetailVO {
     String className;
-    String id;
-    String classId;
+    int id;
+    int classId;
     List<StudentVO> studentVOList;
 
 }

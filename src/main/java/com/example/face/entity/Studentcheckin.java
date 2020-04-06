@@ -7,18 +7,16 @@ import java.io.Serializable;
  * (Studentcheckin)实体类
  *
  * @author makejava
- * @since 2020-04-05 22:06:54
+ * @since 2020-04-06 15:07:40
  */
 public class Studentcheckin implements Serializable {
-    private static final long serialVersionUID = 842230026456664455L;
+    private static final long serialVersionUID = 929289291911913172L;
     
     private Integer id;
     
     private Integer studentId;
     
-    private Integer classId;
-    
-    private Integer teacherId;
+    private Integer checkinId;
     
     private Integer status;
     
@@ -43,20 +41,12 @@ public class Studentcheckin implements Serializable {
         this.studentId = studentId;
     }
 
-    public Integer getClassId() {
-        return classId;
+    public Integer getCheckinId() {
+        return checkinId;
     }
 
-    public void setClassId(Integer classId) {
-        this.classId = classId;
-    }
-
-    public Integer getTeacherId() {
-        return teacherId;
-    }
-
-    public void setTeacherId(Integer teacherId) {
-        this.teacherId = teacherId;
+    public void setCheckinId(Integer checkinId) {
+        this.checkinId = checkinId;
     }
 
     public Integer getStatus() {

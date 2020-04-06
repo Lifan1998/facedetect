@@ -9,9 +9,9 @@ import lombok.Data;
  */
 @Data
 public class StudentVO {
-    String id;
+    int id;
     String name;
-    String status;
+    int status;
     String avatar;
 }
 

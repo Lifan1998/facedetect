@@ -2,13 +2,15 @@ package com.example.face.dao;
 
 import com.example.face.entity.Studentcheckin;
 import org.apache.ibatis.annotations.Param;
+import org.omg.PortableInterceptor.INACTIVE;
+
 import java.util.List;
 
 /**
  * (Studentcheckin)表数据库访问层
  *
  * @author makejava
- * @since 2020-04-05 22:06:54
+ * @since 2020-04-06 15:07:42
  */
 public interface StudentcheckinDao {
 
@@ -38,6 +40,8 @@ public interface StudentcheckinDao {
      */
     List<Studentcheckin> queryAll(Studentcheckin studentcheckin);
 
+    List<Studentcheckin> queryByCheckInId(@Param("checkInId") int checkInId);
+
     /**
      * 新增数据
      *
@@ -54,7 +58,10 @@ public interface StudentcheckinDao {
      */
     int update(Studentcheckin studentcheckin);
 
-    int updateStatus(@Param("id") int id, @Param("status") int status);
+    int updateStatus(@Param("studentId") Integer studentId, @Param("checkInId") Integer checkInId, @Param("status") Integer status);
+
+    int deleteStudentByCheckIn(@Param("studentId") Integer studentId, @Param("checkInId") Integer checkInId);
+
 
     /**
      * 通过主键删除数据
