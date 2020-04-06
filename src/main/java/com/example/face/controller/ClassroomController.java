@@ -3,14 +3,11 @@ package com.example.face.controller;
 import com.example.face.dao.*;
 import com.example.face.domain.dto.ClassRoomItemVO;
 import com.example.face.domain.dto.StudentCountVO;
-import com.example.face.domain.dto.StudentVO;
 import com.example.face.enmu.StudentStatus;
 import com.example.face.entity.*;
-import com.example.face.service.ClassroomService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,11 +23,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("classroom")
 public class ClassroomController {
-    /**
-     * 服务对象
-     */
-    @Resource
-    private ClassroomService classroomService;
 
     @Resource
     private TeacherclassDao teacherclassDao;
@@ -60,6 +52,8 @@ public class ClassroomController {
     public List<StudentCountVO> get(@PathVariable("classroomId") int classroomId, @RequestParam("userId") int userId,
                                     @RequestParam("fromTime") Date fromTime,
                                     @RequestParam("toTime") Date toTime) {
+
+        // TODO 时间选择器
 
         List<Studentcheckin> studentcheckinList = new ArrayList<>();
         // 拿到该这个班级下的所有打卡记录

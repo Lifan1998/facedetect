@@ -192,10 +192,10 @@ public class FaceController {
                             long normalTime = nowTime + 1000 * 60 * 30;
                             if (System.currentTimeMillis() > normalTime) {
                                 // 迟到了
-                                studentcheckinDao.updateStatus(faceDetectRequest.getCheckInId(), StudentStatus.BE_LATE.getValue());
+                                studentcheckinDao.updateStatus(faceDetectRequest.getUserId(), faceDetectRequest.getCheckInId(), StudentStatus.BE_LATE.getValue());
                             } else {
                                 // 正常签到
-                                studentcheckinDao.updateStatus(faceDetectRequest.getCheckInId(), StudentStatus.NORMAL.getValue());
+                                studentcheckinDao.updateStatus(faceDetectRequest.getUserId(), faceDetectRequest.getCheckInId(), StudentStatus.NORMAL.getValue());
                             }
                         }
                     });

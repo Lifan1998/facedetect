@@ -17,13 +17,10 @@ import java.util.Map;
  * @description
  */
 @Data
-@Builder
 public class AiQQRequest {
     final static String app_key = "ZaT5Y332RtWAEZBH";
-    @Builder.Default
     int app_id = 2131852408;
     int time_stamp;
-    @Builder.Default
     String nonce_str = "20e3408a79";
     String sign;
 
