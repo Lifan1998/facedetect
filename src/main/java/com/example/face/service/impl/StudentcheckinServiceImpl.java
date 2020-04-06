@@ -76,4 +76,27 @@ public class StudentcheckinServiceImpl implements StudentcheckinService {
     public boolean deleteById(Integer id) {
         return this.studentcheckinDao.deleteById(id) > 0;
     }
+
+    /**
+     * 创建或更新某个学生的打卡状态
+     *
+     * @param studentId
+     * @param checkInId
+     * @param status
+     * @return
+     */
+    @Override
+    public int createOrUpdateStatus(int studentId, int checkInId, int status) {
+        // 获取某个学生的状态
+        Studentcheckin studentcheckin = studentcheckinDao.queryByCheckInIdAndStudentId(checkInId, studentId);
+        if (studentcheckin == null) {
+            studentcheckin = new Studentcheckin();
+            studentcheckin.setCheckinId(checkInId);
+            studentcheckin.setStudentId(studentId);
+            studentcheckin.setStatus(status);
+            return studentcheckinDao.insert(studentcheckin);
+        } else {
+            return studentcheckinDao.updateStatus(studentId, checkInId, status);
+        }
+    }
 }

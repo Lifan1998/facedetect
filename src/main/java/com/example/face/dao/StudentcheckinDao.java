@@ -41,6 +41,7 @@ public interface StudentcheckinDao {
     List<Studentcheckin> queryAll(Studentcheckin studentcheckin);
 
     List<Studentcheckin> queryByCheckInId(@Param("checkInId") int checkInId);
+    Studentcheckin queryByCheckInIdAndStudentId(@Param("checkInId") int checkInId, @Param("studentId") int studentId);
 
     /**
      * 新增数据

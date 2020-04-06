@@ -65,6 +65,18 @@
         </where>
     </select>
 
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryByCheckInIdAndStudentId" resultMap="StudentcheckinMap">
+        select
+        id, student_id, checkin_id, status, addTime, updateTime
+        from face.studentcheckin
+        <where>
+            checkin_id = #{checkinId} and student_id = #{studentId}
+        </where>
+    </select>
+
+
+
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         insert into face.studentcheckin(student_id, checkin_id, status, addTime, updateTime)

@@ -21,7 +21,7 @@ import static sun.jvm.hotspot.debugger.win32.coff.DebugVC50X86RegisterEnums.TAG;
  */
 @Service
 @Slf4j
-public class QQAlApiService {
+public class AlQQApiService {
 
     /**
      * 多人脸识别

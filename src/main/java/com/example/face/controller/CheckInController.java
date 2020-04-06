@@ -11,6 +11,8 @@ import com.example.face.entity.Checkin;
 import com.example.face.entity.Classroom;
 import com.example.face.entity.Student;
 import com.example.face.entity.Studentcheckin;
+import com.example.face.http.request.FaceDetectMultifaceRequest;
+import com.example.face.service.CheckInService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +42,9 @@ public class CheckInController {
 
     @Resource
     private ClassroomDao classroomDao;
+
+    @Autowired
+    private CheckInService checkInService;
 
     /**
      * 手动更新学生状态
@@ -126,6 +131,21 @@ public class CheckInController {
                 }).collect(Collectors.toList());
 
         return checkInItemVOS;
+    }
+
+
+    @PostMapping("/createCheckIn")
+    public ResponseEntity createCheckIn(FaceDetectMultifaceRequest faceDetectMultifaceRequest) {
+        checkInService.createCheckIn(faceDetectMultifaceRequest);
+        return ResponseEntity.ok("创建打卡成功");
+
+    }
+
+    @PostMapping("/updateCheckIn")
+    public ResponseEntity updateCheckIn(FaceDetectMultifaceRequest faceDetectMultifaceRequest) {
+        checkInService.updateCheckIn(faceDetectMultifaceRequest);
+        return ResponseEntity.ok("更新打卡成功");
+
     }
 
 

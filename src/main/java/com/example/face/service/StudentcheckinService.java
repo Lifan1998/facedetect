@@ -52,4 +52,13 @@ public interface StudentcheckinService {
      */
     boolean deleteById(Integer id);
 
+    /**
+     * 创建或更新某个学生的打卡状态
+     * @param studentId
+     * @param checkInId
+     * @param status
+     * @return
+     */
+    int createOrUpdateStatus(int studentId, int checkInId, int status);
+
 }
