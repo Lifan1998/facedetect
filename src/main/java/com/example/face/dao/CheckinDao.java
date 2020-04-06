@@ -40,6 +40,8 @@ public interface CheckinDao {
      */
     List<Checkin> queryAll(Checkin checkin);
 
+    List<Checkin> queryByTeacherIdAndClassId(@Param("teacherId") Integer teacherId, @Param("classId") Integer classId);
+
     /**
      * 新增数据
      *

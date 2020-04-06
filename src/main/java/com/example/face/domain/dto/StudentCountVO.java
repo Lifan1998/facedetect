@@ -13,7 +13,7 @@ import java.util.Date;
 @Data
 public class StudentCountVO {
 
-    String id;
+    int id;
     String name;
     /**
      * 学号
