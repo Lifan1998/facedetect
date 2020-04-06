@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.face.dao.StudentclassDao">
+
+    <resultMap type="com.example.face.entity.Studentclass" id="StudentclassMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="studentId" column="student_id" jdbcType="INTEGER"/>
+        <result property="classId" column="class_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="StudentclassMap">
+        select
+          id, student_id, class_id
+        from face.studentclass
+        where id = #{id}
+    </select>
+    <!--查询单个-->
+    <select id="queryByClassId" resultMap="StudentclassMap">
+        select
+          *
+        from face.teacherclass
+        where class_id = #{classId}
+    </select>
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="StudentclassMap">
+        select
+          id, student_id, class_id
+        from face.studentclass
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="StudentclassMap">
+        select
+          id, student_id, class_id
+        from face.studentclass
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="studentId != null">
+                and student_id = #{studentId}
+            </if>
+            <if test="classId != null">
+                and class_id = #{classId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into face.studentclass(student_id, class_id)
+        values (#{studentId}, #{classId})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update face.studentclass
+        <set>
+            <if test="studentId != null">
+                student_id = #{studentId},
+            </if>
+            <if test="classId != null">
+                class_id = #{classId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from face.studentclass where id = #{id}
+    </delete>
+
+</mapper>
