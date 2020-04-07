@@ -58,12 +58,8 @@
         id, class_id, teacher_id, add_time, update_time
         from face.checkin
         <where>
-
-            <if test="classId != null">
-                class_id = #{classId}
-            </if>
-            <if test="teacherId != null">
-                and teacher_id = #{teacherId}
+            class_id = #{classId}
+            and teacher_id = #{teacherId}
         </where>
         order by update_time desc
     </select>
