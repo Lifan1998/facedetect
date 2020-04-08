@@ -61,7 +61,7 @@
         id, student_id, checkin_id, status, addTime, updateTime
         from face.studentcheckin
         <where>
-            checkin_id = #{checkinId}
+            checkin_id = #{checkInId}
         </where>
     </select>
 

@@ -135,14 +135,14 @@ public class CheckInController {
 
 
     @PostMapping("/createCheckIn")
-    public ResponseEntity createCheckIn(FaceDetectMultifaceRequest faceDetectMultifaceRequest) {
+    public ResponseEntity createCheckIn(@RequestBody  FaceDetectMultifaceRequest faceDetectMultifaceRequest) {
         checkInService.createCheckIn(faceDetectMultifaceRequest);
         return ResponseEntity.ok("创建打卡成功");
 
     }
 
     @PostMapping("/updateCheckIn")
-    public ResponseEntity updateCheckIn(FaceDetectMultifaceRequest faceDetectMultifaceRequest) {
+    public ResponseEntity updateCheckIn(@RequestBody FaceDetectMultifaceRequest faceDetectMultifaceRequest) {
         checkInService.updateCheckIn(faceDetectMultifaceRequest);
         return ResponseEntity.ok("更新打卡成功");
 

@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity login(int type, String account, String password) {
+    public ResponseEntity<User> login(int type, String account, String password) {
         if (type == LoginType.EMAIL.getValue()) {
             User user = userDao.queryByEmail(account);
             if (user == null) {
@@ -42,17 +42,18 @@ public class UserServiceImpl implements UserService {
                 user.setEmail(account);
                 user.setPassword(password);
                 user.setUsername("用户" + account);
+                user.setNickname(user.getUsername());
                 userDao.insert(user);
-                return ResponseEntity.ok("账号不存在，已为您创建");
+                return ResponseEntity.ok(user);
             }
 
             if (user.getPassword().equals(password)) {
-                return ResponseEntity.ok("登录成功");
+                return ResponseEntity.ok(user);
             } else {
-                return new ResponseEntity<>("密码错误", HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
             }
         }
-        return new ResponseEntity<>("不支持的登录方式", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**

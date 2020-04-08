@@ -9,22 +9,23 @@ import java.io.Serializable;
  * (User)实体类
  *
  * @author makejava
- * @since 2020-04-03 16:55:08
+ * @since 2020-04-09 01:11:20
  */
 @Data
-public class User {
+public class User implements Serializable {
+    private static final long serialVersionUID = -16112931440245836L;
     
-    private int id;
+    private Integer id;
     
     private String username;
     
     private String password;
     
-    private Integer moblie;
+    private String moblie;
     
-    private Date addtime;
+    private Date addTime;
     
-    private Date updatetime;
+    private Date updateTime;
     
     private String email;
     
@@ -39,5 +40,6 @@ public class User {
     * 身份证号
     */
     private String idcard;
+
 
 }

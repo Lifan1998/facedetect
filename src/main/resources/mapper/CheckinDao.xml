@@ -70,8 +70,8 @@
         select
           id, class_id, teacher_id, add_time, update_time
         from face.checkin
-        limit #{offset}, #{limit}
         order by add_time desc
+        limit #{offset}, #{limit}
     </select>
 
     <!--新增所有列-->
