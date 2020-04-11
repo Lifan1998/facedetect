@@ -1,6 +1,8 @@
 package com.example.face.http.request.ai.qq;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.example.face.http.request.ai.qq.request.AiQQGetPersonIdsRequest;
 import com.example.face.http.request.ai.qq.request.AiQQRequest;
 import com.example.face.http.request.ai.qq.response.AiQQDetectmultifaceResponse;
@@ -12,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
-import static sun.jvm.hotspot.debugger.win32.coff.DebugVC50X86RegisterEnums.TAG;
 
 /**
  * @author fan.li
@@ -30,8 +31,6 @@ public class AlQQApiService {
      */
     public AiQQResponse<AiQQDetectmultifaceResponse> faceDetectmultiface(AiQQRequest aiQQRequest) {
 
-        AiQQResponse<AiQQDetectmultifaceResponse> aiQQResponse;
-
 
         OkHttpClient okHttpClient = new OkHttpClient();
 
@@ -42,17 +41,21 @@ public class AlQQApiService {
                 .post(requestBody)
                 .build();
         Response response;
+        String responseString;
         try {
             response = okHttpClient.newCall(request).execute();
-            log.info("" + TAG, "onResponse: " + response.body().string());
-            
+            responseString = response.body().string();
+            log.info("info {}", "onResponse: " + responseString);
+
         } catch (IOException e) {
             e.printStackTrace();
             log.error("error {}", "e: " + e);
             return null;
         }
+        JSONObject jsonObject = JSON.parseObject(responseString);
 
-        aiQQResponse = (AiQQResponse<AiQQDetectmultifaceResponse>) JSON.parse(response.body().toString());
+        AiQQResponse<AiQQDetectmultifaceResponse> aiQQResponse = JSON.parseObject(jsonObject.toJSONString(), new TypeReference<AiQQResponse<AiQQDetectmultifaceResponse>>(){});
+        log.info("aiQQresponse: {}", aiQQResponse);
         return aiQQResponse;
     }
 
@@ -74,17 +77,19 @@ public class AlQQApiService {
                 .post(requestBody)
                 .build();
         Response response;
+        String responseString;
         try {
             response = okHttpClient.newCall(request).execute();
-            log.info("" + TAG, "onResponse: " + response.body().string());
+            responseString = response.body().string();
+            log.info("info {}", "onResponse: " + responseString);
 
         } catch (IOException e) {
             e.printStackTrace();
             log.error("error {}", "e: " + e);
             return null;
         }
-
-        aiQQResponse = (AiQQResponse<AiQQFaceVerifyResponse>) JSON.parse(response.body().toString());
+        JSONObject jsonObject = JSON.parseObject(responseString);
+        aiQQResponse = JSON.parseObject(jsonObject.toJSONString(), new TypeReference<AiQQResponse<AiQQFaceVerifyResponse>>(){});
         return aiQQResponse;
     }
 
@@ -106,17 +111,19 @@ public class AlQQApiService {
                 .post(requestBody)
                 .build();
         Response response;
+        String responseString;
         try {
             response = okHttpClient.newCall(request).execute();
-            log.info("" + TAG, "onResponse: " + response.body().string());
+            responseString = response.body().string();
+            log.info("info {}", "onResponse: " + responseString);
 
         } catch (IOException e) {
             e.printStackTrace();
             log.error("error {}", "e: " + e);
             return null;
         }
-
-        aiQQResponse = (AiQQResponse<AiQQNewPersonResponse>) JSON.parse(response.body().toString());
+        JSONObject jsonObject = JSON.parseObject(responseString);
+        aiQQResponse = JSON.parseObject(jsonObject.toJSONString(), new TypeReference<AiQQResponse<AiQQNewPersonResponse>>(){});
         return aiQQResponse;
     }
 
@@ -133,15 +140,18 @@ public class AlQQApiService {
                 .post(requestBody)
                 .build();
         Response response;
+        String responseString;
         try {
             response = okHttpClient.newCall(request).execute();
-            log.info("" + TAG, "onResponse: " + response.body().string());
+            responseString = response.body().string();
+            log.info("info {}", "onResponse: " + responseString);
 
         } catch (IOException e) {
             e.printStackTrace();
             log.error("error {}", "e: " + e);
             return null;
         }
+        JSONObject jsonObject = JSON.parseObject(responseString);
 
         aiQQResponse = (AiQQResponse<AiQQGetPersonIdsRequest>) JSON.parse(response.body().toString());
         return aiQQResponse;

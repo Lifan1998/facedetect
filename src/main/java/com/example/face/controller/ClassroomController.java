@@ -50,8 +50,8 @@ public class ClassroomController {
      */
     @GetMapping("/{classroomId}")
     public List<StudentCountVO> get(@PathVariable("classroomId") int classroomId, @RequestParam("userId") int userId,
-                                    @RequestParam("fromTime") Date fromTime,
-                                    @RequestParam("toTime") Date toTime) {
+                                    @RequestParam(value = "fromTime", required = false) Date fromTime,
+                                    @RequestParam(value = "toTime", required = false) Date toTime) {
 
         // TODO 时间选择器
 

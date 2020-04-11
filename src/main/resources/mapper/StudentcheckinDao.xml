@@ -71,7 +71,7 @@
         id, student_id, checkin_id, status, addTime, updateTime
         from face.studentcheckin
         <where>
-            checkin_id = #{checkinId} and student_id = #{studentId}
+            checkin_id = #{checkInId} and student_id = #{studentId}
         </where>
     </select>
 
@@ -79,8 +79,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into face.studentcheckin(student_id, checkin_id, status, addTime, updateTime)
-        values (#{studentId}, #{checkinId}, #{status}, #{addtime}, #{updatetime})
+        insert into face.studentcheckin(student_id, checkin_id, status)
+        values (#{studentId}, #{checkinId}, #{status})
     </insert>
 
     <!--通过主键修改数据-->

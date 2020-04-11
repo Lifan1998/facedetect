@@ -48,8 +48,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into face.classroom(name, addTime, updateTime)
-        values (#{name}, #{addtime}, #{updatetime})
+        insert into face.classroom(name)
+        values (#{name})
     </insert>
 
     <!--通过主键修改数据-->

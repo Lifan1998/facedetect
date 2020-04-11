@@ -15,15 +15,15 @@ import com.example.face.http.request.ai.qq.response.AiQQResponse;
 import com.example.face.service.CheckInService;
 import com.example.face.service.FaceDetectService;
 import com.example.face.service.StudentcheckinService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
  * @description
  */
 @Service
+@Slf4j
 public class CheckInServiceImpl implements CheckInService {
 
     @Autowired
@@ -95,11 +96,15 @@ public class CheckInServiceImpl implements CheckInService {
         // 图片加工
         List<String> base64ImageList = faceDetectService.getBase64ImageStringList(faceDetectRequest.getImage());
 
+        log.info("base64ImageList: {}", base64ImageList);
+
         // 1. 找到打卡组(班级)
         List<Integer> studentIds = studentclassDao.queryByClassId(faceDetectRequest.getClassroomId())
                 .stream()
                 .map(studentclass -> studentclass.getStudentId())
                 .collect(Collectors.toList());
+
+        log.info("studentIds: {}", studentIds);
 
         List<String> base64ImageListCopy = new ArrayList<>(base64ImageList);
 
@@ -137,8 +142,10 @@ public class CheckInServiceImpl implements CheckInService {
             // 新建人脸信息
             Student student = new Student();
             student.setName("学生");
-            student.setStudentNo("未知");
+            student.setStudentNo("12345678");
             studentDao.insert(student);
+            student.setName(student.getName() + student.getId());
+            studentDao.update(student);
 
             Studentclass studentclass = new Studentclass();
             studentclass.setClassId(faceDetectRequest.getClassroomId());
@@ -146,16 +153,18 @@ public class CheckInServiceImpl implements CheckInService {
             studentclassDao.insert(studentclass);
 
             AiQQNewPersonRequest aiQQNewPersonRequest = new AiQQNewPersonRequest();
-            aiQQNewPersonRequest.setGroup_ids(faceDetectRequest.getClassroomId() + "");
+            aiQQNewPersonRequest.setGroup_ids(faceDetectRequest.getClassroomId() + "\\");
             aiQQNewPersonRequest.setImage(base64Image);
             aiQQNewPersonRequest.setPerson_id(student.getId() + "");
             aiQQNewPersonRequest.setPerson_name(student.getName());
+            aiQQNewPersonRequest.setTag(student.getName());
             AiQQResponse<AiQQNewPersonResponse> newPersonResponse = alQQApiService.newPerson(aiQQNewPersonRequest);
-            if (newPersonResponse.getRet() == 0) {
+            if (newPersonResponse.getRet() != 0) {
                 // 新建失败了
                 // 手动回滚删除学生
                 studentDao.deleteById(student.getId());
                 studentclassDao.deleteById(studentclass.getId());
+                throw new RuntimeException( "人脸入库失败, 腾讯云拒绝此次服务，请检查接口调用次数");
             } else {
                 // 添加打卡记录
                 // TODO 迟到
@@ -185,6 +194,8 @@ public class CheckInServiceImpl implements CheckInService {
 
         });
 
+        log.info("studentIdsAndClassId {}", studentIdsAndClassId);
+
         base64ImageList.forEach(base64Image -> {
             AiQQFaceVerifyRequest aiQQFaceVerifyRequest = new AiQQFaceVerifyRequest();
 
@@ -206,7 +217,8 @@ public class CheckInServiceImpl implements CheckInService {
         if (faceDetectRequest.getClassroomId() == null || faceDetectRequest.getClassroomId() == 0) {
             // 新建班级并建立人脸识别组
             Classroom classroom = new Classroom();
-            classroom.setName("新建班级(" + "2020-03-03" + ")");
+            SimpleDateFormat format = new SimpleDateFormat("MMdd");
+            classroom.setName("班级" + format.format(new Date()));
             classroomDao.insert(classroom);
             Teacherclass teacherclass = new Teacherclass();
             teacherclass.setClassId(classroom.getId());

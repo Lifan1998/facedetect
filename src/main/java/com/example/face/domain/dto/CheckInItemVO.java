@@ -11,6 +11,8 @@ import java.util.Date;
  */
 @Data
 public class CheckInItemVO {
+
+    int id;
     String className;
     Date recentTime;
     /**

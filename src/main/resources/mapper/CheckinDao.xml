@@ -76,8 +76,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into face.checkin(class_id, teacher_id, add_time, update_time)
-        values (#{classId}, #{teacherId}, #{addTime}, #{updateTime})
+        insert into face.checkin(class_id, teacher_id)
+        values (#{classId}, #{teacherId})
     </insert>
 
     <!--通过主键修改数据-->

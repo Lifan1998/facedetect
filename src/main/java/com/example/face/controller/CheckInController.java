@@ -93,14 +93,15 @@ public class CheckInController {
                     StudentVO studentVO = new StudentVO();
                     Student student = studentDao.queryById(studentcheckin.getStudentId());
                     studentVO.setAvatar(student.getAvatar());
-                    student.setName(student.getName());
+                    studentVO.setName(student.getName());
                     studentVO.setStatus(studentcheckin.getStatus());
                     studentVO.setId(studentcheckin.getStudentId());
                     return studentVO;
                 }).collect(Collectors.toList());
 
         checkInDetailVO.setStudentVOList(studentVOList);
-        Classroom classroom = classroomDao.queryById(id);
+        Checkin checkin = checkinDao.queryById(id);
+        Classroom classroom = classroomDao.queryById(checkin.getClassId());
         checkInDetailVO.setId(id);
         checkInDetailVO.setClassId(classroom.getId());
         checkInDetailVO.setClassName(classroom.getName());
@@ -123,6 +124,7 @@ public class CheckInController {
                     CheckInItemVO checkInItemVO = new CheckInItemVO();
 
                     Classroom classroom = classroomDao.queryById(checkin.getClassId());
+                    checkInItemVO.setId(checkin.getId());
                     checkInItemVO.setClassName(classroom.getName());
                     checkInItemVO.setRecentTime(checkin.getAddTime());
                     checkInItemVO.setStudentTotalNum(studentcheckins.size());
