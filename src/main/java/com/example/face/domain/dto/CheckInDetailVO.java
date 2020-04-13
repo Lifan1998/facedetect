@@ -2,6 +2,7 @@ package com.example.face.domain.dto;
 
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,6 +16,7 @@ public class CheckInDetailVO {
     int id;
     int classId;
     List<StudentVO> studentVOList;
+    Date updateTime;
 
 }
 

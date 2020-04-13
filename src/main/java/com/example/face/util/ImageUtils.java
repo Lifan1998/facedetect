@@ -17,22 +17,33 @@ import java.util.List;
 public class ImageUtils {
     public static File base64ToFile(String base64String) {
         String[] strings = base64String.split(",");
-        String extension;
-        // check image's extension
-        switch (strings[0]) {
-            case "data:image/jpeg;base64":
-                extension = "jpeg";
-                break;
-            case "data:image/png;base64":
-                extension = "png";
-                break;
-            default: //should write cases for more images types
-                extension = "jpg";
-                break;
+        String extension = "jpg";
+        byte[] data;
+        if (strings.length > 1) {
+
+            // check image's extension
+            switch (strings[0]) {
+                case "data:image/jpeg;base64":
+                    extension = "jpeg";
+                    break;
+                case "data:image/png;base64":
+                    extension = "png";
+                    break;
+
+                case "data:image/jpg;base64":
+                    extension = "jpg";
+                    break;
+                default: //should write cases for more images types
+                    extension = "jpeg";
+                    break;
+            }
+            data = DatatypeConverter.parseBase64Binary(strings[1]);
+        } else {
+            data = DatatypeConverter.parseBase64Binary(strings[0]);
         }
+
         //convert base64 string to binary data
-        byte[] data = DatatypeConverter.parseBase64Binary(strings[1]);
-        String path = "/Users/apple/Downloads/切图/发现/头像_v1" + extension;
+        String path = "/root/data/face/image_" + System.currentTimeMillis() + "."+ extension;
         File file = new File(path);
         try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
             outputStream.write(data);
@@ -88,7 +99,7 @@ public class ImageUtils {
     }
 
     public static void main(String args[]) {
-        File file = new File("/Users/apple/Downloads/切图/发现/testv3.png");
+        File file = new File("/Users/apple/Downloads/zhoujielun.jpg");
 
         File file2 = handleFileSize(file, 100 * 1000);
 
@@ -100,6 +111,7 @@ public class ImageUtils {
 
         File file1 = base64ToFile(encodeFileToBase64Binary(file));
         System.out.println(file1.getName());
+        System.out.println(encodeFileToBase64Binary(file1).length());
         System.out.println(encodeFileToBase64Binary(file1));
 
     }

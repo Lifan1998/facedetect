@@ -1,5 +1,6 @@
 package com.example.face.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.face.dao.CheckinDao;
 import com.example.face.dao.ClassroomDao;
 import com.example.face.dao.StudentDao;
@@ -105,6 +106,7 @@ public class CheckInController {
         checkInDetailVO.setId(id);
         checkInDetailVO.setClassId(classroom.getId());
         checkInDetailVO.setClassName(classroom.getName());
+        checkInDetailVO.setUpdateTime(checkin.getUpdateTime());
 
         return checkInDetailVO;
     }
@@ -137,16 +139,16 @@ public class CheckInController {
 
 
     @PostMapping("/createCheckIn")
-    public ResponseEntity createCheckIn(@RequestBody  FaceDetectMultifaceRequest faceDetectMultifaceRequest) {
+    public ResponseEntity<FaceDetectMultifaceRequest> createCheckIn(@RequestBody  FaceDetectMultifaceRequest faceDetectMultifaceRequest) {
         checkInService.createCheckIn(faceDetectMultifaceRequest);
-        return ResponseEntity.ok("创建打卡成功");
+        return ResponseEntity.ok(faceDetectMultifaceRequest);
 
     }
 
     @PostMapping("/updateCheckIn")
     public ResponseEntity updateCheckIn(@RequestBody FaceDetectMultifaceRequest faceDetectMultifaceRequest) {
         checkInService.updateCheckIn(faceDetectMultifaceRequest);
-        return ResponseEntity.ok("更新打卡成功");
+        return ResponseEntity.ok(faceDetectMultifaceRequest);
 
     }
 

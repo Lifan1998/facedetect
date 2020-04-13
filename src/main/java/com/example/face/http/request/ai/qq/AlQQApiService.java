@@ -45,17 +45,15 @@ public class AlQQApiService {
         try {
             response = okHttpClient.newCall(request).execute();
             responseString = response.body().string();
-            log.info("info {}", "onResponse: " + responseString);
-
         } catch (IOException e) {
             e.printStackTrace();
-            log.error("error {}", "e: " + e);
+            log.error("error faceDetectmultiface {}", "e: " + e);
             return null;
         }
         JSONObject jsonObject = JSON.parseObject(responseString);
 
         AiQQResponse<AiQQDetectmultifaceResponse> aiQQResponse = JSON.parseObject(jsonObject.toJSONString(), new TypeReference<AiQQResponse<AiQQDetectmultifaceResponse>>(){});
-        log.info("aiQQresponse: {}", aiQQResponse);
+        log.info("info  faceDetectmultiface  api {}", "aiQQResponse: " + aiQQResponse);
         return aiQQResponse;
     }
 
@@ -81,15 +79,15 @@ public class AlQQApiService {
         try {
             response = okHttpClient.newCall(request).execute();
             responseString = response.body().string();
-            log.info("info {}", "onResponse: " + responseString);
 
         } catch (IOException e) {
             e.printStackTrace();
-            log.error("error {}", "e: " + e);
+            log.error("error faceVerify {}", "e: " + e);
             return null;
         }
         JSONObject jsonObject = JSON.parseObject(responseString);
         aiQQResponse = JSON.parseObject(jsonObject.toJSONString(), new TypeReference<AiQQResponse<AiQQFaceVerifyResponse>>(){});
+        log.info("info  faceVerify  api {}", "aiQQResponse: " + aiQQResponse);
         return aiQQResponse;
     }
 
@@ -115,15 +113,15 @@ public class AlQQApiService {
         try {
             response = okHttpClient.newCall(request).execute();
             responseString = response.body().string();
-            log.info("info {}", "onResponse: " + responseString);
 
         } catch (IOException e) {
             e.printStackTrace();
-            log.error("error {}", "e: " + e);
+            log.error("error  newPerson {}", "e: " + e);
             return null;
         }
         JSONObject jsonObject = JSON.parseObject(responseString);
         aiQQResponse = JSON.parseObject(jsonObject.toJSONString(), new TypeReference<AiQQResponse<AiQQNewPersonResponse>>(){});
+        log.info("info  newPerson  api {}", "aiQQResponse: " + aiQQResponse);
         return aiQQResponse;
     }
 
@@ -144,7 +142,6 @@ public class AlQQApiService {
         try {
             response = okHttpClient.newCall(request).execute();
             responseString = response.body().string();
-            log.info("info {}", "onResponse: " + responseString);
 
         } catch (IOException e) {
             e.printStackTrace();

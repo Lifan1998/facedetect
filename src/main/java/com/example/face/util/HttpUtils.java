@@ -18,14 +18,12 @@ public class HttpUtils {
     public static RequestBody getOkHttpRequest(AiQQRequest aiQQRequest) {
         Map<String, Object> params = AiQQRequest.getPostParam(aiQQRequest);
 
-        log.info("getOkHttpRequest1 {}", params);
 
         FormBody.Builder build = new FormBody.Builder();
         params.keySet().stream().forEach(key -> {
             build.add(key, params.get(key).toString());
         });
 
-        log.info("getOkHttpRequest2 {}", params);
         return build.build();
     }
 }

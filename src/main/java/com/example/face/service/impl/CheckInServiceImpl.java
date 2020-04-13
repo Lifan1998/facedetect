@@ -96,7 +96,9 @@ public class CheckInServiceImpl implements CheckInService {
         // 图片加工
         List<String> base64ImageList = faceDetectService.getBase64ImageStringList(faceDetectRequest.getImage());
 
-        log.info("base64ImageList: {}", base64ImageList);
+        log.info("base64ImageList size: {}", base64ImageList.size());
+
+
 
         // 1. 找到打卡组(班级)
         List<Integer> studentIds = studentclassDao.queryByClassId(faceDetectRequest.getClassroomId())
