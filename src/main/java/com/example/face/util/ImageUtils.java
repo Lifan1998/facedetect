@@ -103,16 +103,17 @@ public class ImageUtils {
 
         File file2 = handleFileSize(file, 100 * 1000);
 
-        System.out.println(file2.length());
-
-        System.out.println(file.length());
         System.out.println(file.getName());
-        System.out.println(encodeFileToBase64Binary(file));
+        System.out.println(file.getAbsolutePath());
 
-        File file1 = base64ToFile(encodeFileToBase64Binary(file));
-        System.out.println(file1.getName());
-        System.out.println(encodeFileToBase64Binary(file1).length());
-        System.out.println("string: " + encodeFileToBase64Binary(file1));
+//        System.out.println(file.length());
+//        System.out.println(file.getName());
+//        System.out.println(encodeFileToBase64Binary(file));
+//
+//        File file1 = base64ToFile(encodeFileToBase64Binary(file));
+//        System.out.println(file1.getName());
+//        System.out.println(encodeFileToBase64Binary(file1).length());
+//        System.out.println("string: " + encodeFileToBase64Binary(file1));
 
     }
 }

@@ -43,7 +43,7 @@ public class FaceDetectServiceImpl implements FaceDetectService {
         File file1 = ImageUtils.base64ToFile(base64Image);
         // 图片压缩
         if ((base64Image.length() - 2 ) * 0.75 >= 1000 * 1024) {
-            file1 = ImageUtils.handleFileSize(file1, 600 * 1024);
+            file1 = ImageUtils.handleFileSize(file1, 1000 * 1024);
             base64Image = ImageUtils.encodeFileToBase64Binary(file1);
         }
 

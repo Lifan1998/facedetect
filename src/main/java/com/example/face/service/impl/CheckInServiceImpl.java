@@ -16,6 +16,7 @@ import com.example.face.http.request.ai.qq.response.AiQQResponse;
 import com.example.face.service.CheckInService;
 import com.example.face.service.FaceDetectService;
 import com.example.face.service.StudentcheckinService;
+import com.example.face.util.ImageUtils;
 import com.tencentcloudapi.iai.v20180301.models.CreatePersonResponse;
 import com.tencentcloudapi.iai.v20180301.models.VerifyPersonResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -156,6 +158,8 @@ public class CheckInServiceImpl implements CheckInService {
             // 新建人脸信息
             Student student = new Student();
             student.setName("学生");
+            File file = ImageUtils.base64ToFile(base64Image);
+            student.setAvatar("http://106.14.141.90/face/" + file.getName());
             student.setStudentNo("12345678");
             studentDao.insert(student);
             student.setName(student.getName() + student.getId());
