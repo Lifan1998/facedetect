@@ -5,6 +5,7 @@ import com.example.face.enmu.StudentStatus;
 import com.example.face.entity.*;
 import com.example.face.http.request.FaceDetectMultifaceRequest;
 import com.example.face.http.request.ai.qq.AlQQApiService;
+import com.example.face.http.request.ai.qq.TencentCouldFaceService;
 import com.example.face.http.request.ai.qq.request.AiQQDetectmultifaceRequest;
 import com.example.face.http.request.ai.qq.request.AiQQFaceVerifyRequest;
 import com.example.face.http.request.ai.qq.request.AiQQNewPersonRequest;
@@ -15,6 +16,8 @@ import com.example.face.http.request.ai.qq.response.AiQQResponse;
 import com.example.face.service.CheckInService;
 import com.example.face.service.FaceDetectService;
 import com.example.face.service.StudentcheckinService;
+import com.tencentcloudapi.iai.v20180301.models.CreatePersonResponse;
+import com.tencentcloudapi.iai.v20180301.models.VerifyPersonResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,6 +40,9 @@ public class CheckInServiceImpl implements CheckInService {
 
     @Autowired
     AlQQApiService  alQQApiService;
+
+    @Autowired
+    TencentCouldFaceService tencentCouldFaceService;
 
     @Autowired
     private FaceDetectService faceDetectService;
@@ -93,12 +99,16 @@ public class CheckInServiceImpl implements CheckInService {
      */
     @Override
     public ResponseEntity updateCheckIn(FaceDetectMultifaceRequest faceDetectRequest) {
+
         // 图片加工
         List<String> base64ImageList = faceDetectService.getBase64ImageStringList(faceDetectRequest.getImage());
 
         log.info("base64ImageList size: {}", base64ImageList.size());
 
-
+        if (faceDetectRequest.getClassroomId() == null) {
+            Checkin checkin = checkinDao.queryById(faceDetectRequest.getCheckInId());
+            faceDetectRequest.setClassroomId(checkin.getClassId());
+        }
 
         // 1. 找到打卡组(班级)
         List<Integer> studentIds = studentclassDao.queryByClassId(faceDetectRequest.getClassroomId())
@@ -113,13 +123,15 @@ public class CheckInServiceImpl implements CheckInService {
         base64ImageList.forEach(base64Image -> {
             studentIds.forEach(studentId -> {
                 // 判断图片与人是否匹配
-                AiQQFaceVerifyRequest aiQQFaceVerifyRequest = new AiQQFaceVerifyRequest();
-                aiQQFaceVerifyRequest.setImage(base64Image);
-                aiQQFaceVerifyRequest.setPerson_id(studentId + "");
+//                AiQQFaceVerifyRequest aiQQFaceVerifyRequest = new AiQQFaceVerifyRequest();
+//                aiQQFaceVerifyRequest.setImage(base64Image);
+//                aiQQFaceVerifyRequest.setPerson_id(studentId + "");
+//
+//                AiQQResponse<AiQQFaceVerifyResponse> aiQQResponse = alQQApiService.faceVerify(aiQQFaceVerifyRequest);
 
-                AiQQResponse<AiQQFaceVerifyResponse> aiQQResponse = alQQApiService.faceVerify(aiQQFaceVerifyRequest);
+                VerifyPersonResponse verifyPersonResponse = tencentCouldFaceService.verifyPerson(studentId + "", base64Image);
 
-                if (aiQQResponse.getData().getIsmatch() == 1) {
+                if (verifyPersonResponse.getIsMatch()) {
                     // 移除处理掉的图片
                     base64ImageListCopy.remove(base64Image);
 
@@ -154,14 +166,16 @@ public class CheckInServiceImpl implements CheckInService {
             studentclass.setStudentId(student.getId());
             studentclassDao.insert(studentclass);
 
-            AiQQNewPersonRequest aiQQNewPersonRequest = new AiQQNewPersonRequest();
-            aiQQNewPersonRequest.setGroup_ids(faceDetectRequest.getClassroomId() + "\\");
-            aiQQNewPersonRequest.setImage(base64Image);
-            aiQQNewPersonRequest.setPerson_id(student.getId() + "");
-            aiQQNewPersonRequest.setPerson_name(student.getName());
-            aiQQNewPersonRequest.setTag(student.getName());
-            AiQQResponse<AiQQNewPersonResponse> newPersonResponse = alQQApiService.newPerson(aiQQNewPersonRequest);
-            if (newPersonResponse.getRet() != 0) {
+//            AiQQNewPersonRequest aiQQNewPersonRequest = new AiQQNewPersonRequest();
+//            aiQQNewPersonRequest.setGroup_ids(faceDetectRequest.getClassroomId()+"");
+//            aiQQNewPersonRequest.setImage(base64Image);
+//            aiQQNewPersonRequest.setPerson_id(student.getId() + "");
+//            aiQQNewPersonRequest.setPerson_name(student.getName());
+//            aiQQNewPersonRequest.setTag(student.getName());
+//            AiQQResponse<AiQQNewPersonResponse> newPersonResponse = alQQApiService.newPerson(aiQQNewPersonRequest);
+
+            CreatePersonResponse createPersonResponse = tencentCouldFaceService.createPerson(faceDetectRequest.getClassroomId() + "", student.getId() + "", base64Image, student.getName());
+            if (createPersonResponse == null) {
                 // 新建失败了
                 // 手动回滚删除学生
                 studentDao.deleteById(student.getId());
@@ -191,7 +205,7 @@ public class CheckInServiceImpl implements CheckInService {
         classIds.forEach(integer -> {
             studentclassDao.queryByClassId(integer).stream()
                     .forEach(studentclass -> {
-                        studentIdsAndClassId.put(studentclass.getClassId(), studentclass.getClassId());
+                        studentIdsAndClassId.put(studentclass.getStudentId(), studentclass.getClassId());
                     });
 
         });
@@ -199,16 +213,18 @@ public class CheckInServiceImpl implements CheckInService {
         log.info("studentIdsAndClassId {}", studentIdsAndClassId);
 
         base64ImageList.forEach(base64Image -> {
-            AiQQFaceVerifyRequest aiQQFaceVerifyRequest = new AiQQFaceVerifyRequest();
+//            AiQQFaceVerifyRequest aiQQFaceVerifyRequest = new AiQQFaceVerifyRequest();
+//
+//            aiQQFaceVerifyRequest.setImage(base64Image);
 
-            aiQQFaceVerifyRequest.setImage(base64Image);
             // 找所有的学生
             studentIdsAndClassId.keySet().stream().forEach(studentId -> {
-                aiQQFaceVerifyRequest.setPerson_id(studentId + "");
+//                aiQQFaceVerifyRequest.setPerson_id(studentId + "");
+                VerifyPersonResponse verifyPersonResponse = tencentCouldFaceService.verifyPerson(studentId + "", base64Image);
 
-                AiQQResponse<AiQQFaceVerifyResponse> aiQQResponse = alQQApiService.faceVerify(aiQQFaceVerifyRequest);
+//                AiQQResponse<AiQQFaceVerifyResponse> aiQQResponse = alQQApiService.faceVerify(aiQQFaceVerifyRequest);
 
-                if (aiQQResponse.getData().getIsmatch() == 1) {
+                if (verifyPersonResponse.getIsMatch()) {
                     // 找到了设置班级
                     faceDetectRequest.setClassroomId(studentIdsAndClassId.get(studentId));
                 }
@@ -222,6 +238,8 @@ public class CheckInServiceImpl implements CheckInService {
             SimpleDateFormat format = new SimpleDateFormat("MMdd");
             classroom.setName("班级" + format.format(new Date()));
             classroomDao.insert(classroom);
+            // 新建打卡组
+            tencentCouldFaceService.createGroup(classroom.getId() + "", classroom.getName(), classroom.getName());
             Teacherclass teacherclass = new Teacherclass();
             teacherclass.setClassId(classroom.getId());
             teacherclass.setTeacherId(faceDetectRequest.getUserId());

@@ -58,6 +58,7 @@ public class CheckInController {
     public ResponseEntity updateStudentStatus(@RequestParam("studentId") int studentId,
                                               @RequestParam("status") int status,
                                               @RequestParam("checkInId") int checkInId) {
+
         studentcheckinDao.updateStatus(studentId, checkInId, status);
 
         return ResponseEntity.ok("更新成功");
@@ -140,6 +141,7 @@ public class CheckInController {
 
     @PostMapping("/createCheckIn")
     public ResponseEntity<FaceDetectMultifaceRequest> createCheckIn(@RequestBody  FaceDetectMultifaceRequest faceDetectMultifaceRequest) {
+
         checkInService.createCheckIn(faceDetectMultifaceRequest);
         return ResponseEntity.ok(faceDetectMultifaceRequest);
 

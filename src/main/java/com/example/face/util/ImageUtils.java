@@ -112,7 +112,7 @@ public class ImageUtils {
         File file1 = base64ToFile(encodeFileToBase64Binary(file));
         System.out.println(file1.getName());
         System.out.println(encodeFileToBase64Binary(file1).length());
-        System.out.println(encodeFileToBase64Binary(file1));
+        System.out.println("string: " + encodeFileToBase64Binary(file1));
 
     }
 }

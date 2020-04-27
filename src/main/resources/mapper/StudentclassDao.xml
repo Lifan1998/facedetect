@@ -19,7 +19,7 @@
     <select id="queryByClassId" resultMap="StudentclassMap">
         select
           *
-        from face.teacherclass
+        from face.studentclass
         where class_id = #{classId}
     </select>
     <!--查询指定行数据-->

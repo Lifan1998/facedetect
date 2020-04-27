@@ -51,6 +51,7 @@ public class FaceDetectServiceImpl implements FaceDetectService {
         List<String> base64ImageList = new ArrayList<>();
         // 1. 多人脸处理
         AiQQDetectmultifaceRequest request = new AiQQDetectmultifaceRequest();
+        base64Image = ImageUtils.encodeFileToBase64Binary(targetFile);
         request.setImage(base64Image);
         request.setTime_stamp((int) (System.currentTimeMillis()/1000));
         AiQQResponse<AiQQDetectmultifaceResponse> response = alQQApiService.faceDetectmultiface(request);
