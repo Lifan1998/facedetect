@@ -70,6 +70,7 @@ public class FaceDetectServiceImpl implements FaceDetectService {
                         List<File> fileList =  new ArrayList<>();
                         try {
                             fileList =  Thumbnails.of(file)
+                                    .scale(1)
                                     .sourceRegion(faceLocation.getX1().intValue(), faceLocation.getY1().intValue(), faceLocation.getX2().intValue(), faceLocation.getY2().intValue())
                                     .outputFormat("jpeg").asFiles(Rename.PREFIX_DOT_THUMBNAIL);
                         } catch (IOException e) {
@@ -78,6 +79,8 @@ public class FaceDetectServiceImpl implements FaceDetectService {
                         // 读取文件转base64
                         // TODO 图片选组
                         File targetFile_ = fileList.stream().findFirst().get();
+                        // 图片落库
+
 
                         return ImageUtils.encodeFileToBase64Binary(targetFile_);
                     }).collect(Collectors.toList());

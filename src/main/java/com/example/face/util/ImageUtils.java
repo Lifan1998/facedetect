@@ -1,5 +1,6 @@
 package com.example.face.util;
 
+import com.example.face.http.request.ai.qq.AlQQApiService;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.name.Rename;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -114,6 +115,8 @@ public class ImageUtils {
 //        System.out.println(file1.getName());
 //        System.out.println(encodeFileToBase64Binary(file1).length());
 //        System.out.println("string: " + encodeFileToBase64Binary(file1));
+
+
 
     }
 }
