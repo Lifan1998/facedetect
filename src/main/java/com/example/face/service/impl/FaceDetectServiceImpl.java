@@ -48,7 +48,7 @@ public class FaceDetectServiceImpl implements FaceDetectService {
         }
 
         File targetFile = file1;
-        List<String> base64ImageList = new ArrayList<>();
+        List<String> base64I   mageList = new ArrayList<>();
         // 1. 多人脸处理
         AiQQDetectmultifaceRequest request = new AiQQDetectmultifaceRequest();
         base64Image = ImageUtils.encodeFileToBase64Binary(targetFile);
