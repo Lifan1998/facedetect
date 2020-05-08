@@ -38,7 +38,7 @@ public class HarmurlController {
         return this.harmurlService.queryById(id);
     }
 
-    @GetMapping("/isHarmUrl")
+    @PostMapping("/isHarmUrl")
     public Boolean isHarmUrl(@Param("url") String url) {
         List<Harmurl> harmurls = harmurlDao.queryByDomain(url);
 

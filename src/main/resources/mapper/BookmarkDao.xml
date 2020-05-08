@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.face.dao.BookmarkDao">
+
+    <resultMap type="com.example.face.entity.Bookmark" id="BookmarkMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="addTime" column="add_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="url" column="url" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="urlType" column="url_type" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BookmarkMap">
+        select
+          *
+
+        from face.bookmark
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BookmarkMap">
+        select
+          *
+
+        from face.bookmark
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryByUserId" resultMap="BookmarkMap">
+        select
+          *
+
+        from face.bookmark
+
+        where user_id = #{userId} and `url_type` = #{type}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BookmarkMap">
+        select
+          *
+
+        from face.bookmark
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="addTime != null">
+                and add_time = #{addTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+            <if test="url != null and url != ''">
+                and url = #{url}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="urlType != null">
+                and url_type = #{urlType}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into face.bookmark(user_id, add_time, update_time, url, name, url_type)
+        values (#{userId}, #{addTime}, #{updateTime}, #{url}, #{name}, #{urlType})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update face.bookmark
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="addTime != null">
+                add_time = #{addTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="url != null and url != ''">
+                url = #{url},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="urlType != null">
+                url_type = #{urlType},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from face.bookmark where id = #{id}
+    </delete>
+
+</mapper>
